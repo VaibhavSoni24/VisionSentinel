@@ -1,0 +1,17 @@
+# Core OpenCV 5 Distribution
+opencv-python-headless==5.0.0.93
+numpy>=1.24.0
+
+# Web Framework & API
+fastapi>=0.110.0
+uvicorn[standard]>=0.28.0
+pydantic>=2.6.0
+python-multipart>=0.0.9
+python-dotenv>=1.0.0
+jinja2>=3.1.2
+
+# Optional Google Gemini Reasoning Provider
+google-genai>=0.1.0
+
+# HTTP Client for Testing & Integration
+httpx>=0.27.0

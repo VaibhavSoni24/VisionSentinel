@@ -1,0 +1,38 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+.git
+.github
+.gitignore
+.dockerignore
+.aws
+
+# Python & caching
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.log
+
+# Data and large files
+data/uploads/*
+data/outputs/*
+data/generated/*
+!data/uploads/.gitkeep
+!data/outputs/.gitkeep
+!data/generated/.gitkeep
+!data/.gitkeep
+*.mp4
+*.avi
+*.mov
+*.onnx
+*.weights
+
+# Local IDE
+.vscode
+.idea

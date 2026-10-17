@@ -1,0 +1,55 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache and bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Testing and coverage
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.log
+
+# Runtime application storage (keep folder placeholders)
+data/uploads/*
+data/outputs/*
+data/generated/*
+!data/uploads/.gitkeep
+!data/outputs/.gitkeep
+!data/generated/.gitkeep
+!data/.gitkeep
+
+# Large media and binary model weights
+*.mp4
+*.avi
+*.mov
+*.onnx
+*.pt
+*.pth
+*.weights
+
+# Credentials and secrets
+.aws/
+*.pem
+*.key
+
+# System & IDE artifacts
+.DS_Store
+Thumbs.db
+dist/
+build/
+*.egg-info/
+.vscode/
+.idea/
