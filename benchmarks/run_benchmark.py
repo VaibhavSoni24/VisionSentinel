@@ -94,7 +94,9 @@ def run_benchmark(
         t_total = time.perf_counter() - t_start
         fps = float(frames_processed) / t_total if t_total > 0 else 0.0
         run_fps_list.append(fps)
-        print(f"  Pass {r + 1}/{num_runs}: {frames_processed} frames in {t_total:.2f}s ({fps:.1f} FPS)")
+        print(
+            f"  Pass {r + 1}/{num_runs}: {frames_processed} frames in {t_total:.2f}s ({fps:.1f} FPS)"
+        )
 
     latencies = np.array(frame_latencies_ms)
     median_lat = float(np.median(latencies))
@@ -136,15 +138,23 @@ def run_benchmark(
     print("  VISION SENTINEL — BENCHMARK RESULTS")
     print("=" * 60)
     print(f"OpenCV Version: {cv2.__version__} on {platform.machine()} ({platform.system()})")
-    print(f"Throughput:     {results['throughput']['mean_fps']} FPS ({results['throughput']['realtime_factor']}x realtime)")
-    print(f"Frame Latency:  Median: {results['latency_ms']['median']} ms | p95: {results['latency_ms']['p95']} ms")
-    print(f"Components:     Preprocess: {results['component_breakdown_ms']['preprocess_mean']}ms | MOG2: {results['component_breakdown_ms']['motion_extraction_mean']}ms | Tracking: {results['component_breakdown_ms']['tracking_and_zones_mean']}ms")
+    print(
+        f"Throughput:     {results['throughput']['mean_fps']} FPS ({results['throughput']['realtime_factor']}x realtime)"
+    )
+    print(
+        f"Frame Latency:  Median: {results['latency_ms']['median']} ms | p95: {results['latency_ms']['p95']} ms"
+    )
+    print(
+        f"Components:     Preprocess: {results['component_breakdown_ms']['preprocess_mean']}ms | MOG2: {results['component_breakdown_ms']['motion_extraction_mean']}ms | Tracking: {results['component_breakdown_ms']['tracking_and_zones_mean']}ms"
+    )
     print("=" * 60)
     return results
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run OpenCV 5 vision pipeline performance benchmark")
+    parser = argparse.ArgumentParser(
+        description="Run OpenCV 5 vision pipeline performance benchmark"
+    )
     parser.add_argument(
         "--video",
         type=Path,
@@ -162,6 +172,7 @@ def main():
 
     if not args.video.is_file():
         from scripts.generate_demo import generate_synthetic_dataset
+
         generate_synthetic_dataset(args.video, args.video.parent / "demo_ground_truth.json")
 
     results = run_benchmark(args.video, num_runs=args.runs)

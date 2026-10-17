@@ -42,7 +42,9 @@ def run_evaluation_and_generate_report() -> Path:
     result_dict = result.model_dump()
 
     metrics = evaluate_against_ground_truth(result_dict, ground_truth)
-    print(f"Evaluation complete: Precision={metrics.precision:.2f}, Recall={metrics.recall:.2f}, F1={metrics.f1_score:.2f}")
+    print(
+        f"Evaluation complete: Precision={metrics.precision:.2f}, Recall={metrics.recall:.2f}, F1={metrics.f1_score:.2f}"
+    )
 
     # Generate docs/EVALUATION.md
     generate_evaluation_markdown(

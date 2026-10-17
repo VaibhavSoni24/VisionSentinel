@@ -25,11 +25,20 @@ def main() -> int:
     print("=" * 65)
 
     checks = [
-        ([python_bin, str(project_root / "scripts" / "check_environment.py")], "Environment & OpenCV Diagnostic Check"),
+        (
+            [python_bin, str(project_root / "scripts" / "check_environment.py")],
+            "Environment & OpenCV Diagnostic Check",
+        ),
         ([python_bin, "-m", "ruff", "check", "."], "Ruff Code Formatting & Lint Check"),
         ([python_bin, "-m", "pytest", "-v", "--tb=short"], "Pytest Unit & Integration Test Suite"),
-        ([python_bin, str(project_root / "benchmarks" / "run_benchmark.py"), "--runs", "1"], "Performance Benchmark Run"),
-        ([python_bin, str(project_root / "scripts" / "generate_evaluation_report.py")], "Evaluation Report Generation"),
+        (
+            [python_bin, str(project_root / "benchmarks" / "run_benchmark.py"), "--runs", "1"],
+            "Performance Benchmark Run",
+        ),
+        (
+            [python_bin, str(project_root / "scripts" / "generate_evaluation_report.py")],
+            "Evaluation Report Generation",
+        ),
     ]
 
     results = []

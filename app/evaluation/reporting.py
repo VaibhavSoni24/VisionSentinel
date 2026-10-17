@@ -61,9 +61,7 @@ def generate_evaluation_markdown(
 
         # Extract tools invoked for this candidate from trace
         c_steps = [
-            s["chosen_tool"]
-            for s in job_result.get("trace_steps", [])
-            if s["candidate_id"] == cid
+            s["chosen_tool"] for s in job_result.get("trace_steps", []) if s["candidate_id"] == cid
         ]
         tool_chain = " -> ".join(c_steps) if c_steps else "None"
 
@@ -71,39 +69,41 @@ def generate_evaluation_markdown(
             f"| **Case {cid}: {label}** | {desc} | `{exp}` | `{outcome}` | {score:.2f} | `{tool_chain}` |"
         )
 
-    md_lines.extend([
-        "",
-        "---",
-        "",
-        "## 3. Evaluated Edge Cases & Failure Modes",
-        "",
-        "The system has been explicitly tested against the following difficult vision conditions:",
-        "",
-        "### 3.1 Shadows & Dynamic Illumination",
-        "- **Behavior:** In OpenCV 5 MOG2, shadow pixels (marked 127) are segmented separately from foreground pixels (255). A binary thresholding step eliminates soft floor shadows before contour calculation.",
-        "- **Agent Tool:** `inspect_roi` measures Laplacian variance and Canny edge density to ensure diffuse shadow artifacts lacking internal texture are dismissed.",
-        "",
-        "### 3.2 Small / Noisy Motion Candidates",
-        "- **Behavior:** Fleeting sensor noise producing areas under 180px is filtered at the contour stage.",
-        "- **Agent Tool:** Candidates with borderline area trigger `inspect_roi` and `extract_foreground` to check solidity before any intrusion alarm can be raised.",
-        "",
-        "### 3.3 Trajectory Turning Away Near Boundary",
-        "- **Behavior:** When an object approaches within 20px of the restricted boundary, ordinary motion detectors trigger false alarms. Vision Sentinel computes the signed distance gradient: if delta < -1.8px, the agent diagnoses a retreat and selects `dismiss_candidate`.",
-        "",
-        "### 3.4 Temporal Occlusion & Tracking Continuity",
-        "- **Behavior:** When an object is occluded for 1-5 frames, `CandidateTracker` retains the track ID without spawning duplicates. `verify_track_continuity` inspects displacement variance over the sliding window.",
-        "",
-        "### 3.5 Sustained Intrusion vs. Momentary Crossing",
-        "- **Behavior:** Transient boundary touch triggers `recheck_temporal_window`. Only sustained presence meeting the persistence threshold (>= 4 frames) confirms an intrusion.",
-        "",
-        "---",
-        "",
-        "## 4. Hardware & Operating Environment",
-        f"- **Processor Architecture:** {job_result.get('video_metadata', {}).get('architecture', 'AMD64')}",
-        "- **OpenCV Distribution:** `opencv-python-headless==5.0.0.93`",
-        "- **Cloud Model:** None (Deterministic Local Agent Fallback)",
-        "- **Zero Unauthorized Spend:** Fully verified locally with zero cloud API expenditure.",
-    ])
+    md_lines.extend(
+        [
+            "",
+            "---",
+            "",
+            "## 3. Evaluated Edge Cases & Failure Modes",
+            "",
+            "The system has been explicitly tested against the following difficult vision conditions:",
+            "",
+            "### 3.1 Shadows & Dynamic Illumination",
+            "- **Behavior:** In OpenCV 5 MOG2, shadow pixels (marked 127) are segmented separately from foreground pixels (255). A binary thresholding step eliminates soft floor shadows before contour calculation.",
+            "- **Agent Tool:** `inspect_roi` measures Laplacian variance and Canny edge density to ensure diffuse shadow artifacts lacking internal texture are dismissed.",
+            "",
+            "### 3.2 Small / Noisy Motion Candidates",
+            "- **Behavior:** Fleeting sensor noise producing areas under 180px is filtered at the contour stage.",
+            "- **Agent Tool:** Candidates with borderline area trigger `inspect_roi` and `extract_foreground` to check solidity before any intrusion alarm can be raised.",
+            "",
+            "### 3.3 Trajectory Turning Away Near Boundary",
+            "- **Behavior:** When an object approaches within 20px of the restricted boundary, ordinary motion detectors trigger false alarms. Vision Sentinel computes the signed distance gradient: if delta < -1.8px, the agent diagnoses a retreat and selects `dismiss_candidate`.",
+            "",
+            "### 3.4 Temporal Occlusion & Tracking Continuity",
+            "- **Behavior:** When an object is occluded for 1-5 frames, `CandidateTracker` retains the track ID without spawning duplicates. `verify_track_continuity` inspects displacement variance over the sliding window.",
+            "",
+            "### 3.5 Sustained Intrusion vs. Momentary Crossing",
+            "- **Behavior:** Transient boundary touch triggers `recheck_temporal_window`. Only sustained presence meeting the persistence threshold (>= 4 frames) confirms an intrusion.",
+            "",
+            "---",
+            "",
+            "## 4. Hardware & Operating Environment",
+            f"- **Processor Architecture:** {job_result.get('video_metadata', {}).get('architecture', 'AMD64')}",
+            "- **OpenCV Distribution:** `opencv-python-headless==5.0.0.93`",
+            "- **Cloud Model:** None (Deterministic Local Agent Fallback)",
+            "- **Zero Unauthorized Spend:** Fully verified locally with zero cloud API expenditure.",
+        ]
+    )
 
     report_content = "\n".join(md_lines)
     output_path.parent.mkdir(parents=True, exist_ok=True)

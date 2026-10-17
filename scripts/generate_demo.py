@@ -243,7 +243,9 @@ def generate_synthetic_dataset(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate synthetic surveillance demo video and ground truth")
+    parser = argparse.ArgumentParser(
+        description="Generate synthetic surveillance demo video and ground truth"
+    )
     parser.add_argument(
         "--output-video",
         type=Path,
