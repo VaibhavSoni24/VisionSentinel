@@ -180,6 +180,46 @@ class EventIncidentManager:
 
         return new_state
 
+    def record_track_state(
+        self,
+        track: TrackedCandidate,
+        frame_idx: int,
+        timestamp: float,
+        prev_state: Optional[EventOutcome] = None,
+    ) -> None:
+        """Records or updates an incident directly from the track's current agent outcome."""
+        first_time = track.observations[0].timestamp if track.observations else timestamp
+        zone_crossed = any(obs.inside_zone for obs in track.observations)
+        human_review = track.state in (EventOutcome.CONFIRMED, EventOutcome.INCONCLUSIVE)
+
+        if prev_state != track.state or track.state == EventOutcome.CONFIRMED:
+            self.timeline.append(
+                TimelineEntry(
+                    timestamp=timestamp,
+                    frame_index=frame_idx,
+                    event_type=f"STATE_{track.state.value}",
+                    candidate_id=track.track_id,
+                    state=track.state,
+                    evidence_score=track.evidence_score,
+                    message=track.rationale,
+                )
+            )
+
+        self.incidents[track.track_id] = EventIncident(
+            event_id=f"EVT-{track.track_id:04d}",
+            candidate_id=track.track_id,
+            category=track.category,
+            final_state=track.state,
+            evidence_score=track.evidence_score,
+            first_detected_timestamp=first_time,
+            final_timestamp=timestamp,
+            frames_observed=track.total_observed_frames,
+            zone_cross_detected=zone_crossed,
+            persistence_seconds=round(track.consecutive_inside_frames * 0.04, 2),
+            human_review_required=human_review,
+            rationale=track.rationale,
+        )
+
     def get_incidents_list(self) -> List[EventIncident]:
         return list(self.incidents.values())
 
