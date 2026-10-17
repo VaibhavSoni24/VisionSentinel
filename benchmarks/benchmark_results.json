@@ -1,0 +1,30 @@
+{
+  "benchmark_metadata": {
+    "timestamp": "2026-10-17T16:39:23Z",
+    "opencv_version": "5.0.0",
+    "python_version": "3.10.11",
+    "os_platform": "Windows-10-10.0.26300-SP0",
+    "cpu_architecture": "AMD64",
+    "frame_dimensions": "640x360",
+    "total_frames_measured": 380,
+    "num_runs": 1
+  },
+  "throughput": {
+    "mean_fps": 100.96,
+    "run_fps": [
+      100.96
+    ],
+    "realtime_factor": 4.04
+  },
+  "latency_ms": {
+    "mean": 8.19,
+    "median": 7.68,
+    "p95": 12.46,
+    "p99": 15.58
+  },
+  "component_breakdown_ms": {
+    "preprocess_mean": 0.38,
+    "motion_extraction_mean": 7.59,
+    "tracking_and_zones_mean": 0.22
+  }
+}
